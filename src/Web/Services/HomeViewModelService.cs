@@ -24,10 +24,11 @@ namespace Web.Services
             _authorRepository = authorRepository;
         }
         
-        public async Task<HomeIndexViewModel> GetHomeIndexViewModel()
+        public async Task<HomeIndexViewModel> GetHomeIndexViewModel(int? categoryId, int? authorId)
         {
-            var spec = new ProductsWithAuthorSpecification();
+            var spec = new ProductsWithAuthorSpecification(categoryId, authorId);
             var products = await _productRepository.ListAsync(spec);
+
             var vm = new HomeIndexViewModel()
             {
                 Products = products.Select(x => new ProductViewModel()
@@ -36,7 +37,7 @@ namespace Web.Services
                     Name = x.Name,
                     PictureUri = x.PictureUri,
                     Price = x.Price,
-                    AuthorName = x.Author.FullName
+                    AuthorName = x.Author?.FullName
                 }).ToList(),
                 Authors = await GetAuthors(),
                 Categories = await GetCategories()
