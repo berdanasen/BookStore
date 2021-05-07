@@ -57,7 +57,8 @@
                     quantity: 1
                 },
                 success: function (data) {
-                    $("#navBasketItemsCount").text(data.BasketItemsCount);
+                    $("#navBasketItemsCount").text(data.basketItemsCount);
+                    toastr.success("The item has been added to the basket.");
                 }
             });
         });
