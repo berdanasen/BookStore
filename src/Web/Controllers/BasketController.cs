@@ -62,6 +62,16 @@ namespace Web.Controllers
             return PartialView("_BasketPartial", await _basketViewModelService.GetBasketViewModel());
         }
 
+        [Authorize]
+        public async Task<IActionResult> Checkout()
+        {
+            var vm = new CheckoutViewModel()
+            {
+                BasketItems = await _basketViewModelService.GetBasketItems()
+            };
+            return View(vm);
+        }
+
         [Authorize, HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Checkout(CheckoutViewModel model)
         {
@@ -87,6 +97,11 @@ namespace Web.Controllers
 
             model.BasketItems = await _basketViewModelService.GetBasketItems();
             return View(model);
+        }
+
+        public IActionResult Success()
+        {
+            return View();
         }
     }
 }
